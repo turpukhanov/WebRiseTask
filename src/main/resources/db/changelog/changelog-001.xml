@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="0" author="admin">
+        <createTable tableName="subscriptions">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1" author="admin">
+        <createTable tableName="users">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="admin">
+        <createTable tableName="user_subscriptions">
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscription_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="user_subscriptions" columnNames="user_id,subscription_id"
+                       constraintName="pk_user_subscriptions"/>
+
+        <addForeignKeyConstraint baseTableName="user_subscriptions" baseColumnNames="user_id"
+                                 constraintName="fk_user_subscriptions_user" referencedTableName="users"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="id"/>
+        
+        <addForeignKeyConstraint baseTableName="user_subscriptions" baseColumnNames="subscription_id" constraintName="fk_user_subscriptions_subscription"
+                                 referencedTableName="subscriptions"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+    <changeSet id="3" author="admin">
+        <insert tableName="subscriptions">
+            <column name="title" value="Yandex Music"/>
+        </insert>
+        <insert tableName="subscriptions">
+            <column name="title" value="Netflix"/>
+        </insert>
+        <insert tableName="subscriptions">
+            <column name="title" value="Spotify"/>
+        </insert>
+        <insert tableName="subscriptions">
+            <column name="title" value="Youtube Premium"/>
+        </insert>
+        <insert tableName="subscriptions">
+            <column name="title" value="Surfshark VPN"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
